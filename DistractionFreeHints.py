@@ -25,9 +25,10 @@ class DistractionFreeHintsCommand(sublime_plugin.TextCommand):
 
   def add_hints(self, view: sublime.View):
     file_name = self.get_file_name(view)
-    name = os.path.basename(file_name) if file_name else "untilted"
+    name = os.path.basename(file_name) if file_name else "untitled"
     self.show_annotation(view, name)
-    t = Timer(5, self.remove_hints, [view])
+    # add config option for autoclose. Some people may want it to stick around
+    t = Timer(5, self.remove_hints, [view]) # move time to config
     t.start()
 
   def show_annotation(self, view: sublime.View, file_name: str):
@@ -40,8 +41,8 @@ class DistractionFreeHintsCommand(sublime_plugin.TextCommand):
         <body id="distraction-free-hints">
             <style>
                     .distraction-free-hints-file-name {{
-                      background-color: gray;
-                      color: white;
+                      background-color: gray; # move colour to config
+                      color: white; # move colour to config
                     }}
             </style>
               <div class="distraction-free-hints-file-name">{}&nbsp;&nbsp;</div>
@@ -55,7 +56,7 @@ class DistractionFreeHintsCommand(sublime_plugin.TextCommand):
       icon = 'dot',
       flags = 0,
       annotations = [header_markup],
-      annotation_color='darkseagreen',
+      annotation_color='darkseagreen', # move colour to config
       on_close = lambda: self.remove_hints(view)
     )
 
