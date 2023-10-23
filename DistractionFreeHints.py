@@ -29,9 +29,7 @@ class DistractionFreeHintsCommand(sublime_plugin.TextCommand):
 
 
   def remove_hints(self, view: sublime.View):
-    self.view.erase_phantoms("DistractionFreeHints") # remove all existing phantoms
-    self.ps = sublime.PhantomSet(view, "DistractionFreeHints")
-    self.phantoms: list[sublime.Phantom] = []
+    self.view.erase_regions("DistractionFreeHints")
 
   def add_hints(self, view: sublime.View):
     file_name = self.get_file_name(view)
@@ -39,9 +37,7 @@ class DistractionFreeHintsCommand(sublime_plugin.TextCommand):
     self.show_phantom(view, name)
 
   def show_phantom(self, view: sublime.View, file_name: str):
-    self.view.erase_phantoms("DistractionFreeHints") # remove all existing phantoms
-    self.ps = sublime.PhantomSet(view, "DistractionFreeHints")
-    self.phantoms = []
+    self.remove_hints(view)
 
     cursor_pos: sublime.Region = view.sel()[0]
     self.debug(f"cursor: {cursor_pos}")
@@ -51,29 +47,23 @@ class DistractionFreeHintsCommand(sublime_plugin.TextCommand):
             <style>
                     .distraction-free-hints-file-name {{
                       background-color: gray;
-                      padding: 5px;
                       color: white;
-                      font-weight: bold;
-                      margin: 20px;
-                    }}
-                    .distraction-free-hints-file-name-close {{
-                      position: relative;
-                      background-color: gray;
-                      padding-left: 5px;
-                      color: black;
-                      font-weight: bold;
-                      font-size: 0.7em;
-                      top: -0.5em;
-                      font-style
-                      margin-left: 20px;
                     }}
             </style>
-            <H3 class="distraction-free-hints-file-name">{}<a class="distraction-free-hints-file-name-close" href="">x</a></H3>
+              <div class="distraction-free-hints-file-name">{}</div>
         </body>
     '''.format(file_name)
 
-    self.phantoms.append(sublime.Phantom(cursor_pos, header_markup, sublime.LAYOUT_BLOCK, on_navigate=lambda href: self.remove_hints(view)));
-    self.ps.update(self.phantoms)
+    view.add_regions(
+      key = "DistractionFreeHints",
+      regions = [view.sel()[0]],
+      scope = '',
+      icon = 'dot',
+      flags = 0,
+      annotations = [header_markup],
+      annotation_color='',
+      on_close = lambda: self.remove_hints(view)
+    )
 
   def get_file_name(self, view: sublime.View):
     file_name = self.view.file_name()
