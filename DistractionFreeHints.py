@@ -56,9 +56,19 @@ class DistractionFreeHintsCommand(sublime_plugin.TextCommand):
                       font-weight: bold;
                       margin: 20px;
                     }}
-
+                    .distraction-free-hints-file-name-close {{
+                      position: relative;
+                      background-color: gray;
+                      padding-left: 5px;
+                      color: black;
+                      font-weight: bold;
+                      font-size: 0.7em;
+                      top: -0.5em;
+                      font-style
+                      margin-left: 20px;
+                    }}
             </style>
-            <H3 class="distraction-free-hints-file-name">{}</H3>
+            <H3 class="distraction-free-hints-file-name">{}<a class="distraction-free-hints-file-name-close" href="">x</a></H3>
         </body>
     '''.format(file_name)
 
