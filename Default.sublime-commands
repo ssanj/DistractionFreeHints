@@ -1,4 +1,3 @@
 [
-    { "caption": "DistractionFreeHints: Add Hints", "command": "distraction_free_hints", "args": {"reset": false } },
-    { "caption": "DistractionFreeHints: Remove Hints", "command": "distraction_free_hints", "args": {"reset": true } },
+    { "caption": "DistractionFreeHints: Add Filename", "command": "distraction_free_hints" },
 ]

@@ -4,26 +4,18 @@ from typing import Optional, List
 from . import distraction_free_hints_setting as SETTING
 from . import settings_loader as SETTING_LOADER
 import os
+from threading import Timer
 
 class DistractionFreeHintsCommand(sublime_plugin.TextCommand):
 
   print("distraction_free_hints command has loaded.")
 
-  def run(self, edit: sublime.Edit, **args) -> None:
+  def run(self, edit: sublime.Edit) -> None:
     if self and self.view:
       self.log("distraction_free_hints is running")
       self.settings: SETTING.DistractionFreeHintsSetting = self.load_settings()
       self.debug(f'settings: {self.settings}')
-      self.debug(f'args: {args}')
-
-      reset: bool = True if args.get("reset") == True else False
-
-      if self.view:
-        if reset:
-          self.remove_hints(self.view)
-        else:
-          self.add_hints(self.view)
-
+      self.add_hints(self.view)
     else:
       sublime.message_dialog("Could not initialise plugin")
 
@@ -33,10 +25,12 @@ class DistractionFreeHintsCommand(sublime_plugin.TextCommand):
 
   def add_hints(self, view: sublime.View):
     file_name = self.get_file_name(view)
-    name = os.path.basename(file_name)
-    self.show_phantom(view, name)
+    name = os.path.basename(file_name) if file_name else "untilted"
+    self.show_annotation(view, name)
+    t = Timer(5, self.remove_hints, [view])
+    t.start()
 
-  def show_phantom(self, view: sublime.View, file_name: str):
+  def show_annotation(self, view: sublime.View, file_name: str):
     self.remove_hints(view)
 
     cursor_pos: sublime.Region = view.sel()[0]
@@ -50,7 +44,7 @@ class DistractionFreeHintsCommand(sublime_plugin.TextCommand):
                       color: white;
                     }}
             </style>
-              <div class="distraction-free-hints-file-name">{}</div>
+              <div class="distraction-free-hints-file-name">{}&nbsp;&nbsp;</div>
         </body>
     '''.format(file_name)
 
@@ -61,16 +55,18 @@ class DistractionFreeHintsCommand(sublime_plugin.TextCommand):
       icon = 'dot',
       flags = 0,
       annotations = [header_markup],
-      annotation_color='',
+      annotation_color='darkseagreen',
       on_close = lambda: self.remove_hints(view)
     )
 
-  def get_file_name(self, view: sublime.View):
+  def get_file_name(self, view: sublime.View) -> Optional[str]:
     file_name = self.view.file_name()
     if file_name:
       return file_name
+    elif view.name():
+      return view.name()
     else:
-      return "<Untitled>"
+      return None
 
 
   def is_enabled(self) -> bool:
