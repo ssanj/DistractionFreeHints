@@ -27,9 +27,10 @@ class DistractionFreeHintsCommand(sublime_plugin.TextCommand):
     file_name = self.get_file_name(view)
     name = os.path.basename(file_name) if file_name else "untitled"
     self.show_annotation(view, name)
-    # add config option for autoclose. Some people may want it to stick around
-    t = Timer(5, self.remove_hints, [view]) # move time to config
-    t.start()
+
+    if self.settings.auto_hide:
+      t = Timer(self.settings.auto_hide_duration, self.remove_hints, [view])
+      t.start()
 
   def show_annotation(self, view: sublime.View, file_name: str):
     self.remove_hints(view)
@@ -41,13 +42,13 @@ class DistractionFreeHintsCommand(sublime_plugin.TextCommand):
         <body id="distraction-free-hints">
             <style>
                     .distraction-free-hints-file-name {{
-                      background-color: gray; # move colour to config
-                      color: white; # move colour to config
+                      background-color: {};
+                      color: {};
                     }}
             </style>
               <div class="distraction-free-hints-file-name">{}&nbsp;&nbsp;</div>
         </body>
-    '''.format(file_name)
+    '''.format(self.settings.background_colour, self.settings.foreground_colour, f"{file_name}")
 
     view.add_regions(
       key = "DistractionFreeHints",
@@ -56,7 +57,7 @@ class DistractionFreeHintsCommand(sublime_plugin.TextCommand):
       icon = 'dot',
       flags = 0,
       annotations = [header_markup],
-      annotation_color='darkseagreen', # move colour to config
+      annotation_color=self.settings.border_colour,
       on_close = lambda: self.remove_hints(view)
     )
 
@@ -71,7 +72,7 @@ class DistractionFreeHintsCommand(sublime_plugin.TextCommand):
 
 
   def is_enabled(self) -> bool:
-    return True
+    return True # can we enable only in distraction-free mode?
 
   def is_visible(self) -> bool:
     return True

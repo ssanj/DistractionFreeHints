@@ -1,4 +1,23 @@
 {
   // Whether to turn on debug logging
-  "debug": true
+  "debug": true,
+
+  // See https://www.sublimetext.com/docs/color_schemes.html for available colours.
+  // hint text colour
+  "foreground_colour": "gray",
+
+  // hint background colour
+  // "background_colour": "white",
+
+  // border colour
+  "border_colour": "darkseagreen",
+
+  // autohide hint
+  // Whether to hide the hint automatically after a duration of 'auto_hide_duration'.
+  // If this is false, you will need to close the hint yourself by clicking the 'x' next to it.
+  "auto_hide": true,
+
+  // autohide duration in seconds
+  // If 'auto_hide' is set to 'true', the hint is automatically hidden after this duration.
+  "auto_hide_duration": 5,
 }
