@@ -27,7 +27,7 @@ to open the command pallet and choosing `DistractionFreeHints: Add Filename`.
 
 ![Distraction-Free Hints](distraction-free-hints.png)
 
-You can also assign a shortcut key to it. Choose `Preferences: Key Bindings` through the command palette and add in
+You can also assign a shortcut key to it. Choose `Preferences: Key Bindings` through the command palette and add
 in the following entry:
 
 ```json
