@@ -16,7 +16,7 @@
 ## Functionality
 
 One issue with `Distraction Free` mode in Sublime Text, is that it doesn't have a way to show the name of the current file
-you're working on. This can be disorienting when you are working across multiple files in full screen but haven on idea
+you're working on. This can be disorienting when you are working across multiple files in full screen but haven no idea
 which one it is.
 
 `DistractionFreeHints` provides a command to display the current file name. It automatically hides the hint after a given
