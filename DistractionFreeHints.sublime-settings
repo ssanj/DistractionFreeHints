@@ -20,4 +20,7 @@
   // autohide duration in seconds
   // If 'auto_hide' is set to 'true', the hint is automatically hidden after this duration.
   "auto_hide_duration": 5,
+
+  // Whether to centre the line being edited
+  "centre_edit": true
 }

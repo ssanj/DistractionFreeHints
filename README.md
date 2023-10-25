@@ -41,7 +41,7 @@ The following settings are supported:
 ```
 {
   // Whether to turn on debug logging
-  "debug": true,
+  "debug": true
 
   // See https://www.sublimetext.com/docs/color_schemes.html for available colours.
   // hint text colour
