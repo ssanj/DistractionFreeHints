@@ -72,10 +72,18 @@ class DistractionFreeHintsCommand(sublime_plugin.TextCommand):
 
 
   def is_enabled(self) -> bool:
-    return True # can we enable only in distraction-free mode?
+    return self.is_distraction_mode()
 
   def is_visible(self) -> bool:
-    return True
+    return self.is_distraction_mode()
+
+  def is_distraction_mode(self) -> bool:
+    window = sublime.active_window()
+    if window:
+      return not (window.is_status_bar_visible() and window.get_tabs_visible() and window.is_sidebar_visible())
+    else:
+      return False
+
 
   def load_settings(self) -> SETTING.DistractionFreeHintsSetting:
     loaded_settings: sublime.Settings = sublime.load_settings('DistractionFreeHints.sublime-settings')
