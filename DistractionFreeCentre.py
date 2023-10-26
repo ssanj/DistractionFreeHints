@@ -18,9 +18,12 @@ class DistractionFreeCentreCommand(sublime_plugin.EventListener):
     self.debug(f'settings: {self.settings}')
 
   def on_modified_async(self, view: sublime.View):
-    if self.settings and self.settings.centre_edit:
-      r = view.sel()[0]
-      view.show_at_center(r)
+    # Sometimes this function is called before on_load_async
+    if hasattr(self, "settings") and self.settings.centre_edit:
+      # Sometimes the view selection has not been set either
+      if view.sel():
+        r = view.sel()[0]
+        view.show_at_center(r)
 
   def load_settings(self) -> SETTING.DistractionFreeCentreSetting:
     loaded_settings: sublime.Settings = sublime.load_settings('DistractionFreeHints.sublime-settings')
