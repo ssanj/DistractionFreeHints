@@ -1,3 +1,4 @@
 [
     { "caption": "DistractionFreeHints: Add Filename", "command": "distraction_free_hints" },
+    { "caption": "DistractionFreeHints: Focus Selection", "command": "distraction_free_focus_selection" },
 ]
